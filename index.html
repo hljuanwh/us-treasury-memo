@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;-webkit-text-size-adjust:100%}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+<title>盈透美债备忘</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Serif+SC:wght@600;700&display=swap">
+<style>
+/* Layout: one narrow reading column like a bank statement; tickers and figures set in mono, sections divided by hairlines, a single summary panel up top. */
+:root {
+  --paper: #f4f6f8;
+  --panel: #ffffff;
+  --ink: #18212b;
+  --muted: #5a6573;
+  --line: #d9dee5;
+  --accent: #1d5a78;
+  --accent-soft: #e3eef4;
+  --gain: #2c7a4b;
+  --loss: #b2463a;
+  --font-display: "Noto Serif SC", "Songti SC", "STSong", serif;
+  --font-body: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #11161c; --panel: #19212a; --ink: #e5e9ee; --muted: #98a3b1; --line: #2b343f;
+    --accent: #79b8d6; --accent-soft: #1d2f3a; --gain: #6cc28e; --loss: #e58372; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #11161c; --panel: #19212a; --ink: #e5e9ee; --muted: #98a3b1; --line: #2b343f;
+  --accent: #79b8d6; --accent-soft: #1d2f3a; --gain: #6cc28e; --loss: #e58372; color-scheme: dark;
+}
+body { background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.7; }
+.wrap { max-width: 760px; margin: 0 auto; padding-block: 28px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: flex; flex-direction: column; gap: 36px; }
+header { display: flex; flex-direction: column; gap: 6px; }
+.eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; color: var(--muted); text-transform: uppercase; }
+h1 { font-family: var(--font-display); font-size: 30px; line-height: 1.3; margin: 0; text-wrap: balance; }
+h2 { font-family: var(--font-display); font-size: 21px; line-height: 1.4; margin: 0; text-wrap: balance; }
+h3 { font-size: 15px; margin: 0; }
+p { margin: 0; }
+section { display: flex; flex-direction: column; gap: 14px; border-top: 1px solid var(--line); padding-top: 24px; }
+.lede { color: var(--muted); }
+.summary { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px 18px 16px; display: flex; flex-direction: column; gap: 10px; }
+.summary ul { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 6px; }
+.tickets { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+.ticket { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.ticket .tag { font-family: var(--font-mono); font-size: 12px; color: var(--accent); letter-spacing: .06em; }
+.ticket code { font-family: var(--font-mono); font-size: 13px; background: var(--accent-soft); color: var(--ink); padding: 4px 8px; border-radius: 5px; word-break: break-all; }
+.ticket dl { display: grid; grid-template-columns: auto 1fr; gap: 2px 14px; margin: 0; }
+.ticket dt { color: var(--muted); }
+.ticket dd { margin: 0; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.ticket .big { font-size: 22px; font-weight: 600; }
+.tbl { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { padding: 8px 12px; text-align: right; border-bottom: 1px solid var(--line); white-space: nowrap; font-variant-numeric: tabular-nums; }
+th:first-child, td:first-child { text-align: left; }
+thead th { font-weight: 600; color: var(--muted); font-size: 13px; background: var(--accent-soft); }
+tbody tr:last-child td { border-bottom: none; }
+td.num { font-family: var(--font-mono); }
+.gain { color: var(--gain); }
+.loss { color: var(--loss); }
+.hl td { background: var(--accent-soft); }
+.note { font-size: 13px; color: var(--muted); }
+.callout { border-left: 3px solid var(--accent); padding: 4px 0 4px 14px; }
+ul.plain { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 6px; }
+.chart { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 14px 10px; display: flex; flex-direction: column; gap: 6px; }
+.legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 13px; color: var(--muted); }
+.legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; background: var(--c); }
+.crow { display: grid; grid-template-columns: 40px 1fr 54px; gap: 8px; align-items: center; font-size: 13px; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.crow .yr { color: var(--muted); }
+.track { position: relative; height: 22px; }
+.track::before { content: ""; position: absolute; top: 0; bottom: 0; left: 25%; border-left: 1px solid var(--muted); opacity: .6; }
+.b { position: absolute; height: 9px; border-radius: 2px; }
+.b5 { top: 1px; background: var(--accent); }
+.b10 { top: 12px; background: var(--gain); }
+.b.neg { background: var(--loss); }
+.vals { text-align: right; line-height: 1.25; font-size: 12px; }
+.axis { display: grid; grid-template-columns: 40px 1fr 54px; gap: 8px; font-size: 11px; color: var(--muted); font-family: var(--font-mono); }
+.axis .ticks { position: relative; height: 14px; }
+.axis .ticks span { position: absolute; transform: translateX(-50%); }
+details { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; }
+details[open] { padding-bottom: 14px; }
+summary { cursor: pointer; font-weight: 600; }
+summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+details .tbl { margin-top: 10px; }
+a { color: var(--accent); }
+.src { font-size: 13px; color: var(--muted); }
+.src li { word-break: break-word; }
+.disclaimer { font-size: 13px; color: var(--muted); background: var(--panel); border: 1px dashed var(--line); border-radius: 10px; padding: 12px 14px; }
+@media (max-width: 480px) { h1 { font-size: 25px; } body { font-size: 14.5px; } }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">2026-10-21 · 盈透证券 · 美国国债</div>
+  <h1>盈透美债备忘</h1>
+  <p class="lede">在盈透买 5 年期或 10 年期美国国债之前，要看清楚的几件事：拿到期能拿多少，汇率和税会吃掉多少，过去 20 年真实是什么结果。</p>
+</header>
+
+<div class="summary">
+  <h3>一页看完</h3>
+  <ul>
+    <li>两只候选：5 年期收益率约 <b>4.94%</b>，10 年期约 <b>5.12%–5.14%</b>，比过去 20 年里每一年 1 月的水平都高。</li>
+    <li><b>按美元算，拿到期一定赚</b>（前提是美国政府不违约）。中途利率怎么涨跌，只影响你中途卖的价格。</li>
+    <li><b>按人民币算，最大变量是汇率</b>。另外，中国税收居民的境外利息要自行申报、交 20% 个税。</li>
+    <li>税后、拿到期，人民币汇率要升到 <b>5.62</b>（5 年期）或 <b>4.74</b>（10 年期）才开始亏。现在是 6.72。</li>
+    <li>过去 20 年每年 1 月买入、拿到期：10 年期按人民币算税后 11 批全部赚钱；5 年期 16 批里有 4 批小亏，原因都是人民币升值。</li>
+    <li>选 5 年还是 10 年，主要看两点：这笔钱多久不用，能不能接受中途账面波动。</li>
+  </ul>
+</div>
+
+<section>
+  <h2>两只候选国债</h2>
+  <p>按「最新发行、交易最活跃」这个客观标准筛出来的两只。名称是盈透 App 列表里显示的样子，下单前把到期日、票面利率、编号三样都对上。</p>
+  <div class="tickets">
+    <div class="ticket">
+      <div class="tag">5 年期</div>
+      <code>US-T GOVT Notes 5 Sep30'31 91282CRN3</code>
+      <dl>
+        <dt>收益率</dt><dd class="big">4.94%</dd>
+        <dt>价格</dt><dd>100.25</dd>
+        <dt>票面利率</dt><dd>5.000%，每半年付息</dd>
+        <dt>到期日</dt><dd>2031-09-30</dd>
+      </dl>
+    </div>
+    <div class="ticket">
+      <div class="tag">10 年期</div>
+      <code>US-T GOVT Notes 4.625 Aug15'36 91282CRF0</code>
+      <dl>
+        <dt>收益率</dt><dd class="big">5.14%</dd>
+        <dt>价格</dt><dd>96.04</dd>
+        <dt>票面利率</dt><dd>4.625%，每半年付息</dd>
+        <dt>到期日</dt><dd>2036-08-15</dd>
+      </dl>
+    </div>
+  </div>
+  <p class="note">价格和收益率来自 Public 的报价页，页面没有标时间。10 月 20 日收盘的市场基准是 5 年期 4.94%、10 年期 5.12%，两者对得上。实时价格以盈透 App 里的 ask yield 为准。10 月 27 日会拍卖新一期 5 年期，之后「最新的 5 年期」就会换成新的那只。</p>
+  <ul class="plain">
+    <li><b>票面利率</b>是按面值每年付多少利息，发行时定死。<b>收益率</b>是按你今天的买入价算的实际回报，比较时看收益率。</li>
+    <li>同一天、到期日相近的几只国债，收益率差不多，十年后结果也差不多。真正要选的是期限：5 年还是 10 年。</li>
+  </ul>
+</section>
+
+<section>
+  <h2>买 1 万美元面值，拿到期能拿多少</h2>
+  <p>按上面的价格买入，持有到到期。利息拿现金、不再投资，单位是美元。</p>
+  <div class="tbl"><table>
+    <thead><tr><th></th><th>5 年期</th><th>10 年期</th></tr></thead>
+    <tbody>
+      <tr><td>买入花费（含 5 美元佣金）</td><td class="num">10,030</td><td class="num">9,609</td></tr>
+      <tr><td>持有期收到的利息</td><td class="num">2,500<br><span class="note">250 × 10 次</span></td><td class="num">4,625<br><span class="note">231.25 × 20 次</span></td></tr>
+      <tr><td>到期拿回本金</td><td class="num">10,000</td><td class="num">10,000</td></tr>
+      <tr><td>税前赚</td><td class="num gain">+2,470（+24.6%）</td><td class="num gain">+5,016（+52.2%）</td></tr>
+      <tr><td>中国个税 20%（约）</td><td class="num">−500</td><td class="num">−1,004</td></tr>
+      <tr class="hl"><td><b>税后赚</b></td><td class="num gain"><b>+1,970（+19.6%）</b></td><td class="num gain"><b>+4,012（+41.8%）</b></td></tr>
+      <tr><td>税后年化（利息不再投资）</td><td class="num">3.70%</td><td class="num">3.62%</td></tr>
+    </tbody>
+  </table></div>
+  <ul class="plain note">
+    <li>年化按「利息不再投资」算，所以比收益率低。持有越久，这个口径压得越多，所以 10 年期的年化看起来反而略低。如果利息按同样利率继续投资，10 年期的年化会高于 5 年期，因为它的收益率更高。</li>
+    <li>税按利息加到期折价（10 年期的 396 美元）合计的 20% 估算。折价部分具体怎么认定，需要问税务师。</li>
+    <li>买入时可能还要付上次付息日以来的应计利息，这笔钱会在第一次付息时拿回来，表里没算。</li>
+  </ul>
+</section>
+
+<section>
+  <h2>汇率：换回人民币时的结果</h2>
+  <p>同样是拿到期，把到期时的全部美元按不同汇率换回人民币，和现在 6.7220 的起点比较。主数字是<b>税后</b>的人民币总回报。</p>
+  <div class="tbl"><table>
+    <thead><tr><th>到期时汇率</th><th>相对现在</th><th>5 年期 税后</th><th>10 年期 税后</th></tr></thead>
+    <tbody>
+      <tr><td>7.10</td><td class="num">+5.6%</td><td class="num gain">+26.4%</td><td class="num gain">+49.7%</td></tr>
+      <tr class="hl"><td>6.72（不变）</td><td class="num">0</td><td class="num gain">+19.6%</td><td class="num gain">+41.8%</td></tr>
+      <tr><td>6.50</td><td class="num">−3.3%</td><td class="num gain">+15.7%</td><td class="num gain">+37.1%</td></tr>
+      <tr><td>6.00</td><td class="num">−10.7%</td><td class="num gain">+6.8%</td><td class="num gain">+26.5%</td></tr>
+      <tr><td>5.60<br><span class="note">重演 10 年期历史最差</span></td><td class="num">−16.7%</td><td class="num loss">−0.3%</td><td class="num gain">+18.1%</td></tr>
+      <tr><td>5.45<br><span class="note">重演 5 年期历史最差</span></td><td class="num">−18.9%</td><td class="num loss">−3.0%</td><td class="num gain">+14.9%</td></tr>
+      <tr><td>5.04<br><span class="note">重演 2005→2014 年</span></td><td class="num">−25.0%</td><td class="num loss">−10.3%</td><td class="num gain">+6.3%</td></tr>
+    </tbody>
+  </table></div>
+  <p class="callout"><b>开始亏钱的汇率：</b>5 年期税后 <b>5.62</b>（税前 5.39），10 年期税后 <b>4.74</b>（税前 4.42）。10 年期利息攒得多，能扛住更大的人民币升值。</p>
+  <ul class="plain">
+    <li><b>2005 年汇改以来，人民币没升破过 6。</b>最强是 2014 年，全年平均 6.14，1 月中间价最高到过 6.0930。</li>
+    <li><b>但 6 只是个整数关口，不是底线。</b>该看的是升值幅度。2005 到 2014 年人民币升了约 25%，同样幅度从 6.72 算起会到 5.04。</li>
+    <li><b>机构预测：</b>今年 5 月，高盛看 12 个月后 6.50，德银看年底 6.55，汇丰看年底 6.65。我找到的预测里最激进的是 6.37，没有一家说会破 6。这些预测是几个月前的，机构预测也常常不准。</li>
+    <li><b>可能推动人民币大幅升值的因素：</b>美元走弱（美国意外宽松或衰退）、中国外贸顺差创纪录、出口商集中把美元换成人民币、中美谈判有超预期进展、全球资金减少对美元的依赖。</li>
+    <li><b>跌破 6 的概率我给不出一个可靠数字。</b>要算这个概率，需要外汇期权市场现在的 1 年期隐含波动率，这个数据没拿到。</li>
+  </ul>
+</section>
+
+<section>
+  <h2>如果一年后就要卖</h2>
+  <p>拿到期可以不管价格波动。但如果中途要用钱、一年后卖出，就要同时承受利率和汇率两种风险。下面按 1 万美元本金测算，主数字是税后，括号里是税前。</p>
+  <div class="tbl"><table>
+    <thead><tr><th></th><th>5 年期</th><th>10 年期</th></tr></thead>
+    <tbody>
+      <tr><td>利率、汇率都不变，一年赚</td><td class="num gain">+3.9%（4.8%）</td><td class="num gain">+4.0%（5.0%）</td></tr>
+      <tr class="hl"><td>利率涨多少开始亏</td><td class="num">+1.10 个百分点（1.39）</td><td class="num">+0.57 个百分点（0.73）</td></tr>
+      <tr><td>利率不变时，汇率到多少开始亏</td><td class="num">6.47（6.41）</td><td class="num">6.46（6.40）</td></tr>
+      <tr><td>利率涨 1 个百分点</td><td class="num gain">+0.3%</td><td class="num loss">−2.8%</td></tr>
+      <tr><td>像 2022 年那样涨 2.25 个百分点</td><td class="num loss">−3.9%</td><td class="num loss">−10.6%</td></tr>
+    </tbody>
+  </table></div>
+  <ul class="plain note">
+    <li>利率一年涨 1 个百分点以上并不罕见：2022 年一年涨了约 2.25 个百分点；今年 2 月到 10 月，10 年期拍卖收益率从 4.177% 涨到 5.300%。</li>
+    <li>测算按当前收益率、接近面值买入近似计算；税按利息 20%，假设卖出亏损不能抵税（这一点我不确定）。没算买卖价差和换汇点差。</li>
+  </ul>
+</section>
+
+<section>
+  <h2>过去 20 年：每年 1 月买入，拿到期</h2>
+  <p>假设 2006–2025 年每年 1 月按当月收益率买入，拿到期再换回人民币。已经到期的有：5 年期 16 批（2006–2021 年买入），10 年期 11 批（2006–2016 年买入）。</p>
+  <div class="tbl"><table>
+    <thead><tr><th>人民币年化</th><th>5 年期（16 批）</th><th>10 年期（11 批）</th></tr></thead>
+    <tbody>
+      <tr><td>平均（税前 / 税后）</td><td class="num">1.74% / 1.37%</td><td class="num">2.81% / 2.33%</td></tr>
+      <tr><td>最差（税后）</td><td class="num loss">−1.00%（2006 年买）</td><td class="num">+1.21%（2006 年买）</td></tr>
+      <tr><td>最好（税后）</td><td class="num gain">+3.66%（2014 年买）</td><td class="num gain">+3.60%（2014 年买）</td></tr>
+      <tr class="hl"><td>税后亏钱的批数</td><td class="num">4 批</td><td class="num">0 批</td></tr>
+      <tr><td>美元年化平均（=买入时收益率）</td><td class="num">2.07%</td><td class="num">3.02%</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="chart" role="img" aria-label="各年份买入、拿到期的人民币税后年化回报">
+    <div class="legend"><span style="--c: var(--accent)">5 年期</span><span style="--c: var(--gain)">10 年期</span><span style="--c: var(--loss)">亏钱</span></div>
+    <div class="crow"><span class="yr">2006</span><div class="track"><span class="b b5 neg" style="left:8.4%;width:16.6%"></span><span class="b b10" style="left:25.0%;width:20.2%"></span></div><span class="vals"><span class="loss">-1.00</span><br><span class="gain">+1.21</span></span></div>
+<div class="crow"><span class="yr">2007</span><div class="track"><span class="b b5 neg" style="left:20.9%;width:4.1%"></span><span class="b b10" style="left:25.0%;width:34.3%"></span></div><span class="vals"><span class="loss">-0.24</span><br><span class="gain">+2.06</span></span></div>
+<div class="crow"><span class="yr">2008</span><div class="track"><span class="b b5 neg" style="left:24.3%;width:0.7%"></span><span class="b b10" style="left:25.0%;width:36.0%"></span></div><span class="vals"><span class="loss">-0.04</span><br><span class="gain">+2.16</span></span></div>
+<div class="crow"><span class="yr">2009</span><div class="track"><span class="b b5 neg" style="left:10.3%;width:14.7%"></span><span class="b b10" style="left:25.0%;width:32.6%"></span></div><span class="vals"><span class="loss">-0.88</span><br><span class="gain">+1.95</span></span></div>
+<div class="crow"><span class="yr">2010</span><div class="track"><span class="b b5" style="left:25.0%;width:3.8%"></span><span class="b b10" style="left:25.0%;width:47.3%"></span></div><span class="vals"><span class="gain">+0.23</span><br><span class="gain">+2.84</span></span></div>
+<div class="crow"><span class="yr">2011</span><div class="track"><span class="b b5" style="left:25.0%;width:35.2%"></span><span class="b b10" style="left:25.0%;width:40.3%"></span></div><span class="vals"><span class="gain">+2.11</span><br><span class="gain">+2.42</span></span></div>
+<div class="crow"><span class="yr">2012</span><div class="track"><span class="b b5" style="left:25.0%;width:33.6%"></span><span class="b b10" style="left:25.0%;width:35.3%"></span></div><span class="vals"><span class="gain">+2.02</span><br><span class="gain">+2.12</span></span></div>
+<div class="crow"><span class="yr">2013</span><div class="track"><span class="b b5" style="left:25.0%;width:33.0%"></span><span class="b b10" style="left:25.0%;width:45.8%"></span></div><span class="vals"><span class="gain">+1.98</span><br><span class="gain">+2.75</span></span></div>
+<div class="crow"><span class="yr">2014</span><div class="track"><span class="b b5" style="left:25.0%;width:61.1%"></span><span class="b b10" style="left:25.0%;width:60.0%"></span></div><span class="vals"><span class="gain">+3.66</span><br><span class="gain">+3.60</span></span></div>
+<div class="crow"><span class="yr">2015</span><div class="track"><span class="b b5" style="left:25.0%;width:52.6%"></span><span class="b b10" style="left:25.0%;width:46.8%"></span></div><span class="vals"><span class="gain">+3.16</span><br><span class="gain">+2.81</span></span></div>
+<div class="crow"><span class="yr">2016</span><div class="track"><span class="b b5" style="left:25.0%;width:10.0%"></span><span class="b b10" style="left:25.0%;width:28.0%"></span></div><span class="vals"><span class="gain">+0.60</span><br><span class="gain">+1.68</span></span></div>
+<div class="crow"><span class="yr">2017</span><div class="track"><span class="b b5" style="left:25.0%;width:23.6%"></span></div><span class="vals"><span class="gain">+1.41</span><br><span class="">—</span></span></div>
+<div class="crow"><span class="yr">2018</span><div class="track"><span class="b b5" style="left:25.0%;width:52.1%"></span></div><span class="vals"><span class="gain">+3.12</span><br><span class="">—</span></span></div>
+<div class="crow"><span class="yr">2019</span><div class="track"><span class="b b5" style="left:25.0%;width:43.4%"></span></div><span class="vals"><span class="gain">+2.61</span><br><span class="">—</span></span></div>
+<div class="crow"><span class="yr">2020</span><div class="track"><span class="b b5" style="left:25.0%;width:32.1%"></span></div><span class="vals"><span class="gain">+1.93</span><br><span class="">—</span></span></div>
+<div class="crow"><span class="yr">2021</span><div class="track"><span class="b b5" style="left:25.0%;width:19.8%"></span></div><span class="vals"><span class="gain">+1.19</span><br><span class="">—</span></span></div>
+
+    <div class="axis"><span></span><div class="ticks"><span style="left:0%">−1.5%</span><span style="left:25%">0</span><span style="left:50%">1.5%</span><span style="left:75%">3%</span><span style="left:100%">4.5%</span></div><span></span></div>
+    <p class="note">每行一个买入年份。上面一条是 5 年期，下面一条是 10 年期，都是税后人民币年化；右边数字从上到下对应 5 年期、10 年期。2017 年以后买入的 10 年期还没到期。</p>
+  </div>
+
+  <details>
+    <summary>逐年明细：5 年期</summary>
+    <div class="tbl"><table>
+      <thead><tr><th>买入年</th><th>美元收益率</th><th>汇率（买入→到期）</th><th>人民币年化 税前</th><th>税后</th></tr></thead>
+      <tbody><tr><td>2006</td><td class="num">4.35%</td><td class="num">7.97→6.46（-19.0%）</td><td class="num loss">-0.27%</td><td class="num loss"><b>-1.00%</b></td></tr><tr><td>2007</td><td class="num">4.75%</td><td class="num">7.60→6.31（-17.0%）</td><td class="num gain">+0.54%</td><td class="num loss"><b>-0.24%</b></td></tr><tr><td>2008</td><td class="num">2.98%</td><td class="num">6.95→6.19（-10.8%）</td><td class="num gain">+0.49%</td><td class="num loss"><b>-0.04%</b></td></tr><tr><td>2009</td><td class="num">1.60%</td><td class="num">6.83→6.14（-10.1%）</td><td class="num loss">-0.58%</td><td class="num loss"><b>-0.88%</b></td></tr><tr><td>2010</td><td class="num">2.48%</td><td class="num">6.77→6.23（-8.0%）</td><td class="num gain">+0.67%</td><td class="num gain"><b>+0.23%</b></td></tr><tr><td>2011</td><td class="num">1.99%</td><td class="num">6.46→6.64（+2.8%）</td><td class="num gain">+2.49%</td><td class="num gain"><b>+2.11%</b></td></tr><tr><td>2012</td><td class="num">0.83%</td><td class="num">6.31→6.75（+7.0%）</td><td class="num gain">+2.18%</td><td class="num gain"><b>+2.02%</b></td></tr><tr><td>2013</td><td class="num">0.81%</td><td class="num">6.19→6.62（+6.8%）</td><td class="num gain">+2.14%</td><td class="num gain"><b>+1.98%</b></td></tr><tr><td>2014</td><td class="num">1.65%</td><td class="num">6.14→6.90（+12.3%）</td><td class="num gain">+3.98%</td><td class="num gain"><b>+3.66%</b></td></tr><tr><td>2015</td><td class="num">1.37%</td><td class="num">6.23→6.90（+10.7%）</td><td class="num gain">+3.42%</td><td class="num gain"><b>+3.16%</b></td></tr><tr><td>2016</td><td class="num">1.52%</td><td class="num">6.64→6.45（-2.9%）</td><td class="num gain">+0.89%</td><td class="num gain"><b>+0.60%</b></td></tr><tr><td>2017</td><td class="num">1.92%</td><td class="num">6.75→6.73（-0.4%）</td><td class="num gain">+1.77%</td><td class="num gain"><b>+1.41%</b></td></tr><tr><td>2018</td><td class="num">2.38%</td><td class="num">6.62→7.05（+6.5%）</td><td class="num gain">+3.57%</td><td class="num gain"><b>+3.12%</b></td></tr><tr><td>2019</td><td class="num">2.54%</td><td class="num">6.90→7.12（+3.2%）</td><td class="num gain">+3.07%</td><td class="num gain"><b>+2.61%</b></td></tr><tr><td>2020</td><td class="num">1.56%</td><td class="num">6.90→7.14（+3.6%）</td><td class="num gain">+2.23%</td><td class="num gain"><b>+1.93%</b></td></tr><tr><td>2021</td><td class="num">0.45%</td><td class="num">6.45→6.72（+4.2%）</td><td class="num gain">+1.27%</td><td class="num gain"><b>+1.19%</b></td></tr></tbody>
+    </table></div>
+  </details>
+  <details>
+    <summary>逐年明细：10 年期</summary>
+    <div class="tbl"><table>
+      <thead><tr><th>买入年</th><th>美元收益率</th><th>汇率（买入→到期）</th><th>人民币年化 税前</th><th>税后</th></tr></thead>
+      <tbody><tr><td>2006</td><td class="num">4.42%</td><td class="num">7.97→6.64（-16.7%）</td><td class="num gain">+1.85%</td><td class="num gain"><b>+1.21%</b></td></tr><tr><td>2007</td><td class="num">4.76%</td><td class="num">7.60→6.75（-11.2%）</td><td class="num gain">+2.74%</td><td class="num gain"><b>+2.06%</b></td></tr><tr><td>2008</td><td class="num">3.74%</td><td class="num">6.95→6.62（-4.7%）</td><td class="num gain">+2.73%</td><td class="num gain"><b>+2.16%</b></td></tr><tr><td>2009</td><td class="num">2.52%</td><td class="num">6.83→6.90（+1.0%）</td><td class="num gain">+2.37%</td><td class="num gain"><b>+1.95%</b></td></tr><tr><td>2010</td><td class="num">3.73%</td><td class="num">6.77→6.90（+1.9%）</td><td class="num gain">+3.41%</td><td class="num gain"><b>+2.84%</b></td></tr><tr><td>2011</td><td class="num">3.39%</td><td class="num">6.46→6.45（-0.1%）</td><td class="num gain">+2.95%</td><td class="num gain"><b>+2.42%</b></td></tr><tr><td>2012</td><td class="num">1.97%</td><td class="num">6.31→6.73（+6.6%）</td><td class="num gain">+2.46%</td><td class="num gain"><b>+2.12%</b></td></tr><tr><td>2013</td><td class="num">1.91%</td><td class="num">6.19→7.05（+13.8%）</td><td class="num gain">+3.09%</td><td class="num gain"><b>+2.75%</b></td></tr><tr><td>2014</td><td class="num">2.86%</td><td class="num">6.14→7.12（+15.9%）</td><td class="num gain">+4.07%</td><td class="num gain"><b>+3.60%</b></td></tr><tr><td>2015</td><td class="num">1.88%</td><td class="num">6.23→7.14（+14.7%）</td><td class="num gain">+3.14%</td><td class="num gain"><b>+2.81%</b></td></tr><tr><td>2016</td><td class="num">2.09%</td><td class="num">6.64→6.72（+1.2%）</td><td class="num gain">+2.04%</td><td class="num gain"><b>+1.68%</b></td></tr></tbody>
+    </table></div>
+  </details>
+
+  <ul class="plain">
+    <li><b>按美元算，拿到期从没亏过。</b>每批的美元年化就等于买入时的收益率。</li>
+    <li><b>按人民币算，汇率影响最大。</b>2006–2010 年买入的几批赶上人民币从 7.97 升到 6.2 左右，美元利息大半被汇率吃掉。</li>
+    <li><b>2012–2016 年美元收益率很低（1.9%–2.9%），按人民币算却是最好的几批。</b>原因是持有期间美元兑人民币从 6.1–6.6 涨到了 6.7–7.1。买入时的收益率只是一半，持有期间的汇率往往影响更大。</li>
+    <li><b>现在的起点和 2007 年相似：</b>收益率高，人民币也在升值。2007 年 1 月买入的，人民币税后年化只有 −0.24%（5 年期）和 2.06%（10 年期）。历史不会简单重复，但值得留意。</li>
+    <li>样本少，而且各批的年份互相重叠，这些结果不能当成规律。</li>
+  </ul>
+</section>
+
+<section>
+  <h2>其他要注意的因素</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>因素</th><th style="text-align:left">影响</th></tr></thead>
+    <tbody>
+      <tr><td>利率</td><td style="text-align:left;white-space:normal">只影响中途卖出的价格；拿到期不影响拿回的美元。利率主要跟着美联储加息降息的预期、通胀、经济强弱、国债发行量走。9 月中旬市场认为加息概率约 92%（一个月前的数）。</td></tr>
+      <tr><td>美国税</td><td style="text-align:left;white-space:normal">开户时填了 W-8BEN 表（证明不是美国人），国债利息不预扣；价差一般不交美国税（一年在美国不满 183 天）。</td></tr>
+      <tr><td>中国税</td><td style="text-align:left;white-space:normal">境外利息、财产转让所得单独计税，税率 20%，次年 3 月 1 日至 6 月 30 日自行申报。2025 年起多地税务部门要求通过境外券商投资的人补申报补税。</td></tr>
+      <tr><td>通胀</td><td style="text-align:left;white-space:normal">普通国债不防通胀。10 年里平均通胀高于收益率的话，实际购买力会缩水。</td></tr>
+      <tr><td>违约</td><td style="text-align:left;white-space:normal">拿回面值的前提是美国政府不违约。普遍认为概率很低，但不是零。</td></tr>
+      <tr><td>费用</td><td style="text-align:left;white-space:normal">佣金每单最低 5 美元，只买 1 张（1,000 美元面值）相当于 0.5%，所以别买得太零碎。另有买卖价差、银行换汇点差。</td></tr>
+      <tr><td>机会成本</td><td style="text-align:left;white-space:normal">利率继续上涨的话，钱锁在较低的利率上。</td></tr>
+      <tr><td>美国遗产税</td><td style="text-align:left;white-space:normal">对非美国人，直接持有的美国国债一般不算美国境内资产；美国上市的国债 ETF 算，超过 6 万美元的部分可能被征税。</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>5 年期还是 10 年期</h2>
+  <p>这里只做对比，不替你们做决定。</p>
+  <div class="tbl"><table>
+    <thead><tr><th></th><th>5 年期</th><th>10 年期</th></tr></thead>
+    <tbody>
+      <tr><td>收益率</td><td class="num">4.94%</td><td class="num">5.12%–5.14%</td></tr>
+      <tr><td>钱回来的时间</td><td class="num">2031-09</td><td class="num">2036-08</td></tr>
+      <tr><td>一年后卖：利率涨多少开始亏（税后）</td><td class="num">1.10 个百分点</td><td class="num">0.57 个百分点</td></tr>
+      <tr><td>拿到期：汇率升到多少开始亏（税后）</td><td class="num">5.62</td><td class="num">4.74</td></tr>
+      <tr><td>过去 20 年人民币税后年化平均</td><td class="num">1.37%（4/16 批亏）</td><td class="num">2.33%（0/11 批亏）</td></tr>
+      <tr><td style="white-space:normal">更匹配的情况</td><td style="text-align:left;white-space:normal">5 年内可能要用这笔钱；比较在意中途账面浮亏</td><td style="text-align:left;white-space:normal">确定能放满 10 年；更担心人民币长期升值</td></tr>
+    </tbody>
+  </table></div>
+  <p>两种都买一些也是一种做法：一部分钱 2031 年回来，一部分锁到 2036 年，在两种风险之间折中。怕买在高点的话，也可以分几次买，把买入价摊平。</p>
+</section>
+
+<section>
+  <h2>下单要点</h2>
+  <ul class="plain">
+    <li>App 里搜 <code>US-T</code>，进 Government Bonds。关掉 Include Non-Tradable，类型选 Notes，按到期日筛选。</li>
+    <li>名称里有 TIPS、STRIPS 的不是普通国债；没有 Notes 字样的是长期国债。</li>
+    <li>用<b>限价单</b>，不要用市价单。1 张 = 1,000 美元面值，佣金每单最低 5 美元。</li>
+    <li>下单前把到期日、票面利率、编号三样都核对一遍。</li>
+    <li>确认账户里的 W-8BEN 表还在有效期内。</li>
+  </ul>
+</section>
+
+<section>
+  <h2>测算口径与没确定的地方</h2>
+  <ul class="plain note">
+    <li>当前收益率：10 月 20 日收盘。两只国债的价格来自 Public 报价页，没有时间戳。</li>
+    <li>当前汇率用的是 10 月 16 日的中间价 6.7220，之后几天的没查到。</li>
+    <li>20 年回测用的是每年 1 月的收益率和全年平均汇率，不是每次拍卖的真实收益率和当天汇率，因为财政部和美联储的数据库连不上。</li>
+    <li>历年汇率来自一个没标出处的数据页，我抽了 2005、2010、2014、2021 年四个数，和统计年鉴的数对过，都一致。</li>
+    <li>中国税：美国国债利息是否适用国内「国债利息免税」（我的理解是不适用）、折价收益怎么认定、亏损能否抵扣，这几点都不确定，金额大的话要问税务师。</li>
+    <li>11 月预计会发行新一期 10 年期，这是按往年的发行规律推断的。</li>
+  </ul>
+</section>
+
+<section>
+  <h2>数据来源</h2>
+  <ul class="plain src">
+    <li>收益率：<a href="https://www.multpl.com/5-year-treasury-rate/table/by-year" target="_blank" rel="noopener">multpl 5 年期</a>、<a href="https://www.multpl.com/10-year-treasury-rate/table/by-year" target="_blank" rel="noopener">multpl 10 年期</a></li>
+    <li>两只国债报价：<a href="https://public.com/bonds/treasury/united-states/ust-5.0-09-30-2031-91282crn3" target="_blank" rel="noopener">Public 91282CRN3</a>、<a href="https://public.com/bonds/treasury/united-states/ust-4.625-08-15-2036-91282crf0" target="_blank" rel="noopener">Public 91282CRF0</a></li>
+    <li>当前汇率：<a href="https://cj.sina.com.cn/articles/view/1663612603/6328b6bb0200248kg" target="_blank" rel="noopener">中国经济网 10 月 16 日中间价</a>；历年汇率：<a href="https://lecondata.com/ML7/Sheet35_curve_finance_China_lecondata.html" target="_blank" rel="noopener">lecondata</a></li>
+    <li>拍卖结果：<a href="https://thevaultreport.com/treasury-auctions/2026-10" target="_blank" rel="noopener">Vault Report</a>；2022 年利率：<a href="https://convextrade.com/metrics/dgs10/history/2022" target="_blank" rel="noopener">convextrade</a></li>
+    <li>盈透下单与 W-8 预扣：<a href="https://www.interactivebrokers.com/campus/trading-lessons/enter-us-treasury-orders-in-tws/" target="_blank" rel="noopener">IBKR 教程及评论区回复</a>；佣金：<a href="https://www.interactivebrokers.com/en/pricing/commissions-bonds.php?re=amer" target="_blank" rel="noopener">IBKR 固定收益佣金</a></li>
+    <li>中国税：<a href="https://fgk.chinatax.gov.cn/zcfgk/c102416/c5207136/content.html" target="_blank" rel="noopener">财政部 税务总局公告 2020 年第 3 号</a>、<a href="https://www.cls.cn/detail/2091536" target="_blank" rel="noopener">财联社：境外所得补税</a>；美国税：<a href="https://www.irs.gov/node/1801" target="_blank" rel="noopener">IRS</a></li>
+    <li>汇率预测：<a href="https://finance.yahoo.com/markets/currencies/articles/global-banks-raise-yuan-forecasts-075406057.html" target="_blank" rel="noopener">路透 2026-05</a>、<a href="https://cn.investing.com/analysis/article-200496835" target="_blank" rel="noopener">陶川 2026-01</a>；利率驱动：<a href="https://tradingeconomics.com/united-states/government-bond-yield/news/584057" target="_blank" rel="noopener">Trading Economics</a></li>
+    <li>遗产税：<a href="https://privatebanking.hsbc.com/wih/wealth-planning/estate-planning/investing-in-the-us-while-managing-the-us-estate-tax-risk" target="_blank" rel="noopener">HSBC 私人银行</a></li>
+  </ul>
+</section>
+
+<p class="disclaimer">这是一份整理资料和测算，不是投资或税务建议。测算基于历史数据和假设，未来结果可能完全不同。具体买不买、买哪只、买多少，请你们自己判断；涉税问题建议咨询税务师。</p>
+
+</div>
+
+</body>
+</html>
